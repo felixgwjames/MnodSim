@@ -1,0 +1,59 @@
+## Input parameters for high MR pressure sites
+
+
+  ## Population parameters
+population_size = 5000
+population_carrying_capacity = population_size*5 # If population creeps above this value, comp is used to punish the population size by increasing the minimum probability of death based on how much higher population size is than the carrying capacity
+population_minimum_size = population_size/10 # If population falls below this value, there is a 10x increased chance of recruitment
+MR_mean = 0.787 # From actual genotype data 
+MR_sd = 0.385
+
+  ## Mortality parameters
+age_impact = 0.7 # scaled age inflicted increase - from 0 to 1
+mortality_age_shift = 150 # at what age does increases in age increase chance of death
+
+MR_imp = T # toggle on/off for MR inflicted death increase
+MR_death_impact = 0.2 # linear scaled MR inflicted death increase - from 0 to 1
+MR_age_impact = 10 # scaled impact of age (ages / MR_age_impact_val) on MR inflicted death increase
+MR_lateintro = T
+MR_timepoint = 1000 # time point when MR is introduced
+
+comp_imp = T # toggle on/off for competition due to carrying capacity 
+comp_impact = 1 # impact of competition due to carrying capacity (1.x multiplier of a scaled competition influence)
+
+  ## Recruitment parameters
+recruitment_const = 0.0025 # base constant for chance of recruitment
+recruitment_age = 7 # age to begin recruiting
+recruitment_mean = 100 # mean for PDF of normal distribution for number of recruited individuals
+recruitment_sd = recruitment_mean/2 # standard deviation of number of recruited individuals
+age_rec_toggle = T # Takes the complimentary of the age fraction to reduce recruitment mean according to size (larger = closer to 1)
+age_recruit_impact_value = 0.8 # Range from 0.01-1. Takes the exponential of this value, the higher this value, the steeper the penalisation
+  #age_scaled <- recruitment_indivs_ages / rec_age_shiftch; age_scaled[age_scaled>1]=1
+  #age_impact <- age_scaled ^ age_recruit_impact_val
+rec_age_shift = 100 # age shift, lower than this age recruitment for the individual is penalised
+MR_rec_toggle = T # toggle on/off of MR affect on recruitment
+MR_recruit_impact = 0.5 # impact of MR on recruitment, a multiplier of the individual MR to reduce recruitment chance, closer to 1 = lower impact; MR_impact <- 1 - recruitment_indivs_MR ^ MR_recruit_impact_val
+density_recruit_toggle = F # Reduces density recruitment by the proportion of individuals in pop vs maximum carrying capacity
+MR_inherit_par_num = 2 # Number of parents to inherit MR from (takes mean of two fecund individuals to skew inheritance)
+MR_rec_adj = 0 # Shift mean of MR status of recruited individuals
+
+
+  ## Intervention parameters
+intercept_togg = F
+intercept_timepoint = 1025
+intercept_indiv = 300
+intercept_MR_mean = 0.9 
+intercept_MR_sd = 0.1
+intercept_reducMort = T
+
+  # Disturbance parameters (ranges from super small to big impacts)
+dist_imp = T # Turn on and off disturbance presence
+disturbance_age_struct_type = "complex" # Impact value flat or varied by age [complex/flat]
+#dist_probability = 0.1 # Probability of disturbance occurring (exponential function transformation)
+dist_impact = 1 # Level of impact (multiplier)
+dist_age_impact = 10 # Impact of age on disturbance 1/(1 + exp((age-val) / 10))
+
+  ## Simulation parameters
+time_max = 2000 # how long to run sim for
+output_timept = time_max/5 # How often to report visual statistics
+timepoint_pop_grab = c(seq(from=1010, to=1020), seq(from=1030, to=1050)) # Saves population at the end of the timepoints (post-recruitment + mortality events) - note time will be +1 than indicated as it is past incident events - saved in object pop_timepoints (list of lists)
